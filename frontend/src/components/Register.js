@@ -22,7 +22,7 @@ function Register() {
         if(data._id !== undefined){
             window.location.href="/";
         }
-        else{
+        else{z
             setUsername("");
             setPassword("");
             setEmail("");
