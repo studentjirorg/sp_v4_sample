@@ -6,6 +6,7 @@ function AddPhoto(props) {
     const userContext = useContext(UserContext); 
     const[name, setName] = useState('');
     const[file, setFile] = useState('');
+    const[message, setMessage] = useState('');
     const[uploaded, setUploaded] = useState(false);
 
     async function onSubmit(e){
@@ -19,6 +20,7 @@ function AddPhoto(props) {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('image', file);
+        formData.append('message', message);
         const res = await fetch('http://localhost:3001/photos', {
             method: 'POST',
             credentials: 'include',
@@ -34,6 +36,7 @@ function AddPhoto(props) {
             {!userContext.user ? <Navigate replace to="/login" /> : ""}
             {uploaded ? <Navigate replace to="/" /> : ""}
             <input type="text" className="form-control" name="ime" placeholder="Ime slike" value={name} onChange={(e)=>{setName(e.target.value)}}/>
+            <input type="text" className="form-control" name="sporocilo" placeholder="Dodaj sporocilo" value={message} onChange={(e)=>{setMessage(e.target.value)}}/>
             <label>Izberi sliko</label>
             <input type="file" id="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
             <input className="btn btn-primary" type="submit" name="submit" value="Naloži" />

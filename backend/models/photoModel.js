@@ -8,6 +8,7 @@ var photoSchema = new Schema({
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'user'
 	},
+	'message' : String,
 	'views' : Number,
 	'likes' : Number
 });

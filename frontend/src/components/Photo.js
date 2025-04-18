@@ -4,6 +4,8 @@ function Photo(props){
             <img className="card-img" src={"http://localhost:3001/"+props.photo.path} alt={props.photo.name}/>
             <div className="card-img-overlay">
                 <h5 className="card-title">{props.photo.name}</h5>
+                <h5 className="card-title">{props.photo.message}</h5>
+
             </div>
         </div>
     );
