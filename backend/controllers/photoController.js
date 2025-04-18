@@ -59,6 +59,7 @@ module.exports = {
 			name : req.body.name,
 			path : "/images/"+req.file.filename,
 			postedBy : req.session.userId,
+            message : req.body.message,
 			views : 0,
 			likes : 0
         });
@@ -99,6 +100,7 @@ module.exports = {
             photo.name = req.body.name ? req.body.name : photo.name;
 			photo.path = req.body.path ? req.body.path : photo.path;
 			photo.postedBy = req.body.postedBy ? req.body.postedBy : photo.postedBy;
+            photo.message = req.body.message ? req.body.message : photo.message;
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
 			
