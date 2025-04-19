@@ -24,6 +24,10 @@ router.post('/', requiresLogin, upload.single('image'), photoController.create);
 
 router.put('/:id', photoController.update);
 
+router.post('/:id/like', requiresLogin, photoController.likePhoto);
+//router.post('/:id/unlike', requiresLogin, photoController.unlike);
+//router.post('/:id/comment', requiresLogin, photoController.comment);
+
 router.delete('/:id', photoController.remove);
 
 module.exports = router;

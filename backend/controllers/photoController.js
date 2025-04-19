@@ -117,6 +117,35 @@ module.exports = {
         });
     },
 
+    // This is just the likePhoto function that needs to be fixed in photoController.js
+
+    likePhoto: function(req, res){
+        if(!req.session || !req.session.userId){
+            return res.status(401).json({ error: "User not logged in" });
+        }
+        
+        PhotoModel.findById(req.params.id)
+            .then(photo => {
+                if(!photo){
+                    return res.status(404).json({
+                        error: "Photo not found"
+                    });
+                }
+
+                photo.likes = photo.likes + 1;
+                return photo.save();
+            })
+            .then(updatedPhoto => {
+                return res.json(updatedPhoto);
+            })
+            .catch(error => {
+                console.error("Server error when liking photo:", error);
+                return res.status(500).json({error: error.message || "Server error when liking photo"});
+            });
+    },
+
+   
+
     /**
      * photoController.remove()
      */
