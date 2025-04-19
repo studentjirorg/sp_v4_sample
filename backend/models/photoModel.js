@@ -10,7 +10,11 @@ var photoSchema = new Schema({
 	},
 	'message' : String,
 	'views' : Number,
-	'likes' : Number
+	'likes' : Number,
+	'dislikes': {
+		type: Number,
+		default: 0
+	}
 });
 
 module.exports = mongoose.model('photo', photoSchema);

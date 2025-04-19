@@ -132,7 +132,7 @@ module.exports = {
                     });
                 }
 
-                photo.likes = photo.likes + 1;
+                photo.dislikes = (photo.dislikes || 0) + 1;
                 return photo.save();
             })
             .then(updatedPhoto => {
@@ -142,6 +142,30 @@ module.exports = {
                 console.error("Server error when liking photo:", error);
                 return res.status(500).json({error: error.message || "Server error when liking photo"});
             });
+    },
+
+    dislikePhoto: function(req, res){
+        if(!req.session || !req.session.userId){
+            return res.status(401).json({error : "User not logged in"})
+        }
+        PhotoModel.findById(req.params.id)
+        .then(photo => {
+            if(!photo){
+                return res.status(404).json({
+                    error: "Photo not found"
+                });
+            }
+
+            photo.dislikes = photo.dislikes + 1;
+            return photo.save();
+        })
+        .then(updatedPhoto => {
+            return res.json(updatedPhoto);
+        })
+        .catch(error => {
+            console.error("Server error when disliking photo: ", error);
+            return res.status(500).json({error: error.message || "Server error when disling photo"});
+        });
     },
 
    
