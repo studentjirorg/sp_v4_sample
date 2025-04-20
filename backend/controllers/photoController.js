@@ -12,7 +12,9 @@ module.exports = {
      */
     list: function (req, res) {
         PhotoModel.find()
+        .sort({ createdAt: -1 })
         .populate('postedBy')
+        .populate('comments.postedBy', 'username') // This is correct - we need to populate comment usernames
         .exec(function (err, photos) {
             if (err) {
                 return res.status(500).json({
@@ -20,9 +22,7 @@ module.exports = {
                     error: err
                 });
             }
-            var data = [];
-            data.photos = photos;
-            //return res.render('photo/list', data);
+            
             return res.json(photos);
         });
     },
