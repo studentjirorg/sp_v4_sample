@@ -26,7 +26,7 @@ router.put('/:id', photoController.update);
 
 router.post('/:id/like', requiresLogin, photoController.likePhoto);
 router.post('/:id/dislike', requiresLogin, photoController.dislikePhoto);
-//router.post('/:id/comment', requiresLogin, photoController.comment);
+router.post('/:id/comment', requiresLogin, photoController.addComment);
 
 router.delete('/:id', photoController.remove);
 

@@ -209,6 +209,54 @@ module.exports = {
                 return res.status(500).json({error: error.message || "Server error when disliking photo"});
             });
     },
+
+    addComment: function(req, res){
+        if(!req.session || !req.session.userId){
+            return res.status(401).json({
+                error: "You are not logged in"
+            });
+        }
+    
+        const myId = req.session.userId;
+        const commentText = req.body.text;
+        
+        if(!commentText || commentText.trim() === '') {
+            return res.status(400).json({
+                error: "Comment text cannot be empty"
+            });
+        }
+    
+        PhotoModel.findById(req.params.id)
+            .then(photo => {
+                if(!photo){
+                    return res.status(404).json({
+                        error: "Photo doesn't exist"
+                    });
+                }
+    
+                if(!Array.isArray(photo.comments)) photo.comments = [];
+                
+                photo.comments.push({
+                    text: commentText,
+                    postedBy: myId
+                });
+    
+                return photo.save();
+            })
+            .then(updatedPhoto => {
+                return PhotoModel.populate(updatedPhoto, {
+                    path: 'comments.postedBy',
+                    select: 'username'
+                });
+            })
+            .then(populatedPhoto => {
+                return res.json(populatedPhoto);
+            })
+            .catch(error => {
+                console.error("Error when commenting", error);
+                return res.status(500).json({ error: error.message || "Server error when commenting on photo" });
+            });
+    },
    
 
     /**
