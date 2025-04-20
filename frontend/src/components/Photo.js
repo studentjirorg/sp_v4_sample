@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../userContext';
+import { Link } from 'react-router-dom';
+
 
 function Photo(props){
     const userContext = useContext(UserContext);
@@ -143,7 +145,7 @@ function Photo(props){
 
     return (
         <div className="card bg-dark text-light mb-2">
-        <img className="card-img-top" src={`http://localhost:3001/${props.photo.path}`} alt={props.photo.name} />
+        <img className="card-img-top w-25" src={`http://localhost:3001/${props.photo.path}`} alt={props.photo.name} />
         
         <div className="card-body">
             <h5 className="card-title">{props.photo.name}</h5>
@@ -193,6 +195,9 @@ function Photo(props){
                 </button>
             </form>
 
+            <Link to={`/photos/${photo._id}`} className="btn btn-outline-light btn-sm ms-auto">
+                                View Details
+            </Link>
         </div>
     </div>
 

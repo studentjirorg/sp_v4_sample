@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import Profile from "./components/Profile";
 import Logout from "./components/Logout";
 import AddPhoto from "./components/AddPhoto";
+import PhotoDetails from './components/PhotoDetails';
 
 function App() {
   /**
@@ -48,6 +49,7 @@ function App() {
           <Header title="My application"></Header>
           <Routes>
             <Route path="/" exact element={<Photos />}></Route>
+            <Route path="/photos/:id" exact element={<PhotoDetails />}></Route>
             <Route path="/login" exact element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/publish" element={<AddPhoto />}></Route>
