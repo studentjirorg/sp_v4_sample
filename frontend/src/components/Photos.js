@@ -21,19 +21,28 @@ function Photos(){
 
     function handlePhotoUpdate(updatedPhoto){
         setPhotos(photos.map(photo =>
-            photo._id == updatedPhoto._id ? updatedPhoto : photo
+            photo._id === updatedPhoto._id ? updatedPhoto : photo
         ))
     }
 
    
 
     return(
-        <div>
-            <h3>Photos:</h3>
-            <ul>
-                {photos.map(photo=>(<Photo photo={photo} key={photo._id} onPhotoUpdate={handlePhotoUpdate}></Photo>))}
-            </ul>
+        <div className="container my-4">
+        <div className="row">
+          <div className="col">
+            <div className="d-flex flex-row flex-wrap justify-content-center gap-4">
+              {photos.map(photo => (
+                <Photo 
+                  photo={photo} 
+                  key={photo._id} 
+                  onPhotoUpdate={handlePhotoUpdate}
+                />
+              ))}
+            </div>
+          </div>
         </div>
+      </div>
     );
 }
 

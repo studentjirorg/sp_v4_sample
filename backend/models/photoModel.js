@@ -40,7 +40,11 @@ var photoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     }],
-    'comments': [commentSchema]
+    'comments': [commentSchema],
+    'createdAt': {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.exports = mongoose.model('photo', photoSchema);
