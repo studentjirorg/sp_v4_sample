@@ -32,23 +32,26 @@ module.exports = {
      */
     show: function (req, res) {
         var id = req.params.id;
-
-        PhotoModel.findOne({_id: id}, function (err, photo) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting photo.',
-                    error: err
-                });
-            }
-
-            if (!photo) {
-                return res.status(404).json({
-                    message: 'No such photo'
-                });
-            }
-
-            return res.json(photo);
-        });
+    
+        PhotoModel.findOne({_id: id})
+            .populate('postedBy')
+            .populate('comments.postedBy', 'username')
+            .exec(function (err, photo) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting photo.',
+                        error: err
+                    });
+                }
+    
+                if (!photo) {
+                    return res.status(404).json({
+                        message: 'No such photo'
+                    });
+                }
+    
+                return res.json(photo);
+            });
     },
 
     /**

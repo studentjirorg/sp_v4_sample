@@ -28,13 +28,13 @@ function PhotoDetails() {
     async function fetchPhoto() {
         try {
             const res = await fetch(`http://localhost:3001/photos/${id}`);
-
+    
             if (!res.ok) {
                 const errorData = await res.json();
                 console.error("Server error", errorData);
                 throw new Error(errorData.error || "Error fetching photo");
             }
-
+    
             const data = await res.json();
             setPhoto(data);
         } catch (error) {

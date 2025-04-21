@@ -18,9 +18,23 @@ function Profile(){
     return (
         <>
             {!userContext.user ? <Navigate replace to="/login" /> : ""}
-            <h1>User profile</h1>
-            <p>Username: {profile.username}</p>
-            <p>Email: {profile.email}</p>
+            <div class="row d-flex justify-content-center">
+            <div class="col col-md-9 col-lg-7 col-xl-6">
+            <div class="card" >
+                <div class="card-body p-4">
+                    <div class="d-flex">
+                            <div class="flex-grow-1 ms-3">
+                                <h2 className="mb-1">User profile</h2>
+                                <h5 class="mb-1">{profile.username}</h5>
+                                <h5 class="mb-1">{profile.email}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            
         </>
     );
 }

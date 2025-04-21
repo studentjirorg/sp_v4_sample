@@ -32,14 +32,14 @@ function AddPhoto(props) {
     }
 
     return (
-        <form className="form-group" onSubmit={onSubmit}>
+        <form className="form-group m-5" onSubmit={onSubmit}>
             {!userContext.user ? <Navigate replace to="/login" /> : ""}
             {uploaded ? <Navigate replace to="/" /> : ""}
-            <input type="text" className="form-control" name="ime" placeholder="Ime slike" value={name} onChange={(e)=>{setName(e.target.value)}}/>
-            <input type="text" className="form-control" name="sporocilo" placeholder="Dodaj sporocilo" value={message} onChange={(e)=>{setMessage(e.target.value)}}/>
-            <label>Izberi sliko</label>
-            <input type="file" id="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
-            <input className="btn btn-primary" type="submit" name="submit" value="Naloži" />
+            <input type="text" className="form-control m-2" name="ime" placeholder="Ime slike" value={name} onChange={(e)=>{setName(e.target.value)}}/>
+            <input type="text" className="form-control m-2" name="sporocilo" placeholder="Dodaj sporocilo" value={message} onChange={(e)=>{setMessage(e.target.value)}}/>
+            <input type="file" className = "m-2" id="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
+            <hr className="m-2" />
+            <input className="btn btn-primary m-2" type="submit" name="submit" value="Naloži" />
         </form>
     )
 }
