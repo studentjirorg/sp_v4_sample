@@ -18,6 +18,19 @@ var commentSchema = new Schema({
     }
 });
 
+var reportSchema = new Schema({
+    text: {
+        type: String,
+        required: true
+    },
+    postedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    }
+})
+
+
 var photoSchema = new Schema({
     'name': String,
     'path': String,
@@ -40,6 +53,7 @@ var photoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     }],
+    'reports' : [reportSchema],
     'comments': [commentSchema],
     'createdAt': {
         type: Date,

@@ -28,6 +28,10 @@ router.post('/:id/like', requiresLogin, photoController.likePhoto);
 router.post('/:id/dislike', requiresLogin, photoController.dislikePhoto);
 router.post('/:id/comment', requiresLogin, photoController.addComment);
 
+router.post('/:id/report', requiresLogin, photoController.reportPhoto)
+
+
+
 router.delete('/:id', photoController.remove);
 
 module.exports = router;
