@@ -22,6 +22,10 @@ module.exports = {
                     error: err
                 });
             }
+
+            const filteredPhotos = photos.filter(photo => 
+                !photo.reports || photo.reports.length < 3
+            );
             
             return res.json(photos);
         });
@@ -48,6 +52,12 @@ module.exports = {
                     return res.status(404).json({
                         message: 'No such photo'
                     });
+                }
+
+                if(photo.reports && photo.reports.length >= 3){
+                    return res.status(403).json({
+                        message: 'This photo has been reported multiple times and is not available'
+                    })
                 }
     
                 return res.json(photo);
@@ -213,6 +223,8 @@ module.exports = {
             });
     },
 
+    
+
     addComment: function(req, res){
         if(!req.session || !req.session.userId){
             return res.status(401).json({
@@ -260,6 +272,67 @@ module.exports = {
                 return res.status(500).json({ error: error.message || "Server error when commenting on photo" });
             });
     },
+
+    reportPhoto: function(req, res) {
+        // Check if user is NOT logged in (fixed the condition)
+        if(!req.session || !req.session.userId) {
+            return res.status(401).json({
+                error: "You are not logged in"
+            });
+        }
+        
+        const myId = req.session.userId;
+        const reportText = req.body.text;
+        
+        // Fixed variable name - using reportText instead of commentText
+        if(!reportText || reportText.trim() === '') {
+            return res.status(400).json({
+                error: "Report can not be empty"
+            });
+        }
+        
+        PhotoModel.findById(req.params.id)
+            .then(photo => {
+                if (!photo) {
+                    return res.status(400).json({
+                        error: "Photo doesn't exist"
+                    });
+                }
+                
+                if(!Array.isArray(photo.reports)) photo.reports = [];
+                
+                photo.reports.push({
+                    text: reportText,
+                    postedBy: myId
+                });
+                
+                return photo.save();
+            })
+            .then(updatedPhoto => {
+                // Populate both comments and reports
+                return PhotoModel.populate(updatedPhoto, [
+                    {
+                        path: 'comments.postedBy',
+                        select: 'username'
+                    },
+                    {
+                        path: 'reports.postedBy',
+                        select: 'username'
+                    }
+                ]);
+            })
+            .then(populatedPhoto => {
+                return res.json(populatedPhoto);
+            })
+            .catch(error => {
+                console.error("Error when reporting", error);
+                return res.status(500).json({ 
+                    error: error.message || "Server error when reporting photo" 
+                });
+            });
+    },
+
+    
    
 
     /**

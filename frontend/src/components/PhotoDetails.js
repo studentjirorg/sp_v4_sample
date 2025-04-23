@@ -32,6 +32,12 @@ function PhotoDetails() {
             if (!res.ok) {
                 const errorData = await res.json();
                 console.error("Server error", errorData);
+                
+                if (res.status === 403) {
+                    setPhoto(null);
+                    return alert("This photo has been reported multiple times and is not available");
+                }
+
                 throw new Error(errorData.error || "Error fetching photo");
             }
     
@@ -117,6 +123,49 @@ function PhotoDetails() {
         }
     }
 
+    async function onReport(e){
+        e.preventDefault();
+
+        if(!userContext.user){
+            alert("Please login to report the photo");
+            return;
+        }
+
+        const reportText = e.target.elements.reportText.value.trim();
+        if(!reportText){
+            alert("Report can not be empty");
+            return;
+        }
+
+        try{
+            const response = await fetch(`http://localhost:3001/photos/${photo._id}/report`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: reportText})
+            });
+
+            if(!response.ok){
+                const errorData = await response.json()
+                console.error("Server error", errorData)
+                throw new Error(errorData.error || "Error when reporting a photo")
+            }
+
+            const updatedPhoto = await response.json()
+            setPhoto(updatedPhoto)
+
+            e.target.elements.reportText.value = '';
+
+
+        } catch(error){
+            console.error("Error when reporting photo", error);
+            alert(`${error.message}`);
+        }
+
+    }
+
     async function onComment(e){
         e.preventDefault(); // Prevent the default form submission
     
@@ -149,11 +198,9 @@ function PhotoDetails() {
             }
             
             const updatedPhoto = await response.json();
-            setPhoto(updatedPhoto);
-            
-
-            
+            setPhoto(updatedPhoto);                     
             e.target.elements.commentText.value = '';
+
         } catch (error) {
             console.error("Error when commenting photo", error);
             alert(`${error.message}`);
@@ -209,6 +256,21 @@ function PhotoDetails() {
                 <button className="btn btn-primary mt-2" type="submit">
                     Submit
                 </button>
+            </form>
+
+            <form onSubmit={onReport}>
+                <div className="form-group">
+                    <label>Add a report</label>
+                    <input
+                        name="reportText"
+                        type="text"
+                        className="form-control"
+                     />
+                </div>
+                <button className="btn btn-primary mt-2" type="submit">
+                    Submit
+                </button>
+
             </form>
 
         </div>
