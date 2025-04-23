@@ -1,9 +1,12 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../userContext';
 import { Link } from 'react-router-dom';
 
 
 function Photo(props){
+
+
+
     const [photo, setPhoto] = useState(props.photo);
     const userContext = useContext(UserContext);
     const [liking, setLiking] = useState(false);
@@ -18,6 +21,12 @@ function Photo(props){
         return photo.dislikedBy && userContext.user && 
                photo.dislikedBy.includes(userContext.user._id);
     };
+
+    useEffect(() => {
+        if (photo.reports && photo.reports.length >= 3 && props.onPhotoUpdate) {
+            props.onPhotoUpdate(photo);
+        }
+    }, [photo, props.onPhotoUpdate]);
 
     async function handleLike(e){
         if (liking) return;

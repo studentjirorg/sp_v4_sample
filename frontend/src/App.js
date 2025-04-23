@@ -10,7 +10,9 @@ import Logout from "./components/Logout";
 import AddPhoto from "./components/AddPhoto";
 import PhotoDetails from './components/PhotoDetails';
 
+
 function App() {
+  
   /**
    * Podatek o tem, ali je uporabnik prijavljen ali ne, bomo potrebovali v vseh komponentah.
    * State je dosegljiv samo znotraj trenutne komponente. Če želimo deliti spremenljivke z
@@ -45,17 +47,19 @@ function App() {
         user: user,
         setUserContext: updateUserData
       }}>
-        <div className="App">
-          <Header title="My application"></Header>
-          <Routes>
-            <Route path="/" exact element={<Photos />}></Route>
-            <Route path="/photos/:id" exact element={<PhotoDetails />}></Route>
-            <Route path="/login" exact element={<Login />}></Route>
-            <Route path="/register" element={<Register />}></Route>
-            <Route path="/publish" element={<AddPhoto />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
-            <Route path="/logout" element={<Logout />}></Route>
-          </Routes>
+        <div style={{ margin: '20px' }}>
+          <div className="App">
+            <Header className="" title="My application "></Header>
+              <Routes>
+                <Route path="/" exact element={<Photos />}></Route>
+                <Route path="/photos/:id" exact element={<PhotoDetails />}></Route>
+                <Route path="/login" exact element={<Login />}></Route>
+                <Route path="/register" element={<Register />}></Route>
+                <Route path="/publish" element={<AddPhoto />}></Route>
+                <Route path="/profile" element={<Profile />}></Route>
+                <Route path="/logout" element={<Logout />}></Route>
+              </Routes>
+            </div>
         </div>
       </UserContext.Provider>
     </BrowserRouter>

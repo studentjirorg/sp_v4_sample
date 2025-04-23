@@ -22,6 +22,10 @@ module.exports = {
                     error: err
                 });
             }
+
+            const filteredPhotos = photos.filter(photo => 
+                !photo.reports || photo.reports.length < 3
+            );
             
             return res.json(photos);
         });
@@ -48,6 +52,12 @@ module.exports = {
                     return res.status(404).json({
                         message: 'No such photo'
                     });
+                }
+
+                if(photo.reports && photo.reports.length >= 3){
+                    return res.status(403).json({
+                        message: 'This photo has been reported multiple times and is not available'
+                    })
                 }
     
                 return res.json(photo);

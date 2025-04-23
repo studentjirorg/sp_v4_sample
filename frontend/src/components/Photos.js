@@ -12,6 +12,9 @@ function Photos(){
         try {
             const res = await fetch("http://localhost:3001/photos");
             const data = await res.json();
+            const filteredPhotos = data.filter(photo => 
+              !photo.reports || photo.reports.length < 3
+            );
             setPhotos(data);
         } catch (error) {
             console.error("Error fetching photos", error)
@@ -20,9 +23,15 @@ function Photos(){
     }
 
     function handlePhotoUpdate(updatedPhoto){
+
+      if(updatedPhoto.reports && updatedPhoto.reports.length >= 3){
+        setPhotos(photos.filter(photo => photo._id !== updatedPhoto._id));
+      } else {
         setPhotos(photos.map(photo =>
-            photo._id === updatedPhoto._id ? updatedPhoto : photo
-        ))
+          photo._id === updatedPhoto._id ? updatedPhoto : photo
+      ))
+      }
+        
     }
 
    
